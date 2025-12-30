@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles */
+@layer base {
+  body {
+    @apply bg-main-bg text-text-primary;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 13px;
+  }
+}
+
+/* Custom scrollbar styles for Settings component */
+@layer utilities {
+  .settings-scrollbar::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  .settings-scrollbar::-webkit-scrollbar-track {
+    background: #1e1e1e;
+    border-radius: 5px;
+  }
+
+  .settings-scrollbar::-webkit-scrollbar-thumb {
+    background: #3c3c3c;
+    border-radius: 5px;
+    border: 2px solid #1e1e1e;
+  }
+
+  .settings-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #007acc;
+  }
+
+  /* Firefox scrollbar */
+  .settings-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #3c3c3c #1e1e1e;
+  }
+
+  .settings-scrollbar:hover {
+    scrollbar-color: #007acc #1e1e1e;
+  }
+}
+
