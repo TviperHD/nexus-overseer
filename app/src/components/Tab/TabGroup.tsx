@@ -15,18 +15,29 @@ interface TabGroupProps {
 /**
  * Tab group component
  * Container for tabs that displays tab bar and active tab content
+ * 
+ * Memoized to prevent unnecessary re-renders during drag operations
  */
-export const TabGroup: React.FC<TabGroupProps> = ({ tabGroupId }) => {
-  const { getTabGroup, getActiveTab, setActiveTab, removeTab } = useTabStore();
-  const { closeFile, saveFile } = useEditorStore();
+export const TabGroup = React.memo<TabGroupProps>(({ tabGroupId }) => {
+  // Optimized selector: subscribe only to the specific tab group (not entire store)
+  const tabGroup = useTabStore(state => 
+    state.tabGroups.find(g => g.id === tabGroupId) || null
+  );
+  
+  // Subscribe to actions (these are stable references, won't cause re-renders)
+  const setActiveTab = useTabStore(state => state.setActiveTab);
+  const removeTab = useTabStore(state => state.removeTab);
+  
+  const closeFile = useEditorStore(state => state.closeFile);
+  const saveFile = useEditorStore(state => state.saveFile);
   const [unsavedDialog, setUnsavedDialog] = useState<{
     tabId: string;
     fileName: string;
     filePath: string;
   } | null>(null);
 
-  const tabGroup = getTabGroup(tabGroupId);
-  const activeTab = getActiveTab(tabGroupId);
+  // Get active tab from the tab group
+  const activeTab = tabGroup?.tabs.find(t => t.id === tabGroup.activeTabId) || null;
 
   // Handle missing tab group
   if (!tabGroup) {
@@ -157,5 +168,8 @@ export const TabGroup: React.FC<TabGroupProps> = ({ tabGroupId }) => {
       )}
     </>
   );
-};
+}, (prevProps, nextProps) => {
+  // Only re-render if tabGroupId changes
+  return prevProps.tabGroupId === nextProps.tabGroupId;
+});
 

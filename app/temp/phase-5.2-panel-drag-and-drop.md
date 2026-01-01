@@ -22,6 +22,7 @@ This phase implements panel drag-and-drop functionality, allowing users to drag 
 
 **Research Sources:**
 - `../02-research/ui-resizable-panels-research.md` - Panel drag research
+- `../02-research/empty-canvas-workflow-research.md` - Empty canvas workflow research
 - `../04-design/ui-overall-layout.md` - Drop zone specifications
 - `../03-planning/technical-specs-resizable-panels.md` - System architecture
 - `DRAG_DROP_VISUAL_EXAMPLES.md` - Visual examples
@@ -46,11 +47,43 @@ This phase implements panel drag-and-drop functionality, allowing users to drag 
 - [ ] Review `src/components/Panels/PanelGroup.tsx` - Understand panel group structure
 - [ ] Review `src/stores/tabStore.ts` - Understand tab drag data
 - [ ] Review Phase 5.1 drop zone system
+- [ ] Review `../02-research/empty-canvas-workflow-research.md` - Understand empty canvas workflow
 
 ### 3. Critical Notes
 - [ ] **Note:** Panel drop zones are managed in panelStore
 - [ ] Tab drop zones (for tab-bar) are managed in tabStore (Phase 5.1)
 - [ ] When tab dropped on panel edge, tabStore triggers panelStore action
+- [ ] **Empty Canvas:** Must handle panel creation from empty canvas
+- [ ] **Main Panel:** Main panel created on-demand when first tab is opened
+- [ ] **Dynamic Creation:** Panels created dynamically when tabs are dragged to empty space or edges
+
+---
+
+## 0. Empty Canvas & Main Panel Support (Prerequisites)
+
+### 0.1 Empty Canvas Panel Creation
+- [ ] Update `createPanelSplit` action to handle empty canvas:
+  - [ ] If no panels exist (empty canvas):
+    - [ ] Create main panel first
+    - [ ] Create new panel for dropped tab
+    - [ ] Create horizontal or vertical group containing both panels
+    - [ ] Set appropriate sizes (50/50 split)
+  - [ ] If panels exist:
+    - [ ] Use existing panel split logic
+
+### 0.2 Main Panel Integration
+- [ ] Ensure main panel handling in all panel operations:
+  - [ ] Panel creation checks for main panel existence
+  - [ ] Panel removal preserves main panel (if it's the only panel)
+  - [ ] Layout updates include main panel state
+  - [ ] Main panel ID constant: `'main-panel'`
+
+### 0.3 Empty Canvas Drop Zone
+- [ ] Update drop zone detection to handle empty canvas:
+  - [ ] If no panels exist, entire canvas is a drop zone
+  - [ ] Dropping on empty canvas creates main panel + new panel
+  - [ ] Drop zone indicator shows full canvas when dragging over empty space
+  - [ ] Visual feedback: Blue outline around entire canvas
 
 ---
 
@@ -85,12 +118,13 @@ This phase implements panel drag-and-drop functionality, allowing users to drag 
   - [ ] Define `PanelSplitOperation` interface:
     ```typescript
     interface PanelSplitOperation {
-      targetPanelId: string;
+      targetPanelId: string | null; // null if empty canvas
       direction: 'horizontal' | 'vertical';
-      position: 'before' | 'after'; // Where to insert new panel
+      position: 'before' | 'after'; // Where to insert new panel (ignored if empty canvas)
       newPanelId: string;
       newTabGroupId: string;
       size: number; // Percentage for new panel
+      isEmptyCanvas?: boolean; // true if creating from empty canvas
     }
     ```
 
@@ -235,18 +269,25 @@ This phase implements panel drag-and-drop functionality, allowing users to drag 
   - [ ] Export `calculatePanelSplit` function:
     ```typescript
     function calculatePanelSplit(
-      targetPanelId: string,
-      edge: 'top' | 'right' | 'bottom' | 'left',
-      currentLayout: PanelLayout
+      targetPanelId: string | null, // null if empty canvas
+      edge: 'top' | 'right' | 'bottom' | 'left' | 'empty-canvas',
+      currentLayout: PanelLayout | null // null if empty canvas
     ): PanelSplitOperation
     ```
-  - [ ] Find target panel in layout tree
-  - [ ] Determine split direction:
-    - [ ] Top/Bottom → `'horizontal'`
-    - [ ] Left/Right → `'vertical'`
-  - [ ] Determine insertion position:
-    - [ ] Top/Left → `'before'`
-    - [ ] Bottom/Right → `'after'`
+  - [ ] Handle empty canvas case:
+    - [ ] If `currentLayout` is null or has no panels:
+      - [ ] Create main panel first
+      - [ ] Create new panel for dropped tab
+      - [ ] Create horizontal group (default) or vertical if edge suggests it
+      - [ ] Return split operation for both panels
+  - [ ] Handle existing panels:
+    - [ ] Find target panel in layout tree
+    - [ ] Determine split direction:
+      - [ ] Top/Bottom → `'horizontal'`
+      - [ ] Left/Right → `'vertical'`
+    - [ ] Determine insertion position:
+      - [ ] Top/Left → `'before'`
+      - [ ] Bottom/Right → `'after'`
   - [ ] Calculate new panel size (default 50%)
   - [ ] Generate new panel ID and tab group ID
   - [ ] Return `PanelSplitOperation`

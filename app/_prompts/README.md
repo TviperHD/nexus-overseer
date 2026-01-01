@@ -23,8 +23,9 @@ This folder contains prompt files used for AI-assisted development sessions.
 3. **At Session End:**
    - Use `AI_SESSION_END.md` template to document session completion
    - Create session overview in `app/session-overviews/`
+   - **Note:** Session overview should have the same name as the checklist being worked on (no dates/times)
 
 ---
 
-**Last Updated:** 2024-12-28
+**Last Updated:** 2025-12-30
 

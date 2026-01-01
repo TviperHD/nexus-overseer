@@ -1,0 +1,97 @@
+/* Separator styling - keep visual width at 4px */
+[data-separator] {
+  width: 4px;
+  background-color: #3e3e42;
+  cursor: col-resize;
+  transition: background-color 0.15s ease;
+  position: relative;
+  border: none;
+  outline: none;
+}
+
+/* Extend hover detection area using invisible pseudo-element */
+[data-separator]::before {
+  content: '';
+  position: absolute;
+  /* Extend hover area further to match cursor change zone exactly */
+  left: -6px;
+  right: -6px;
+  top: 0;
+  bottom: 0;
+  /* Invisible but captures hover events */
+  background: transparent;
+  pointer-events: auto;
+  z-index: 0;
+}
+
+/* Visual outline that appears on hover - only on the actual 4px separator */
+[data-separator]::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+  pointer-events: none;
+  transition: all 0.15s ease;
+  z-index: 1;
+}
+
+/* Hover state - triggered when hovering over extended area */
+[data-separator]:hover {
+  background-color: #505050;
+}
+
+[data-separator]:hover::after {
+  border-left: 2px solid #007acc;
+  border-right: 2px solid #007acc;
+  box-shadow: 0 0 4px rgba(0, 122, 204, 0.3);
+}
+
+/* Active/dragging state */
+[data-separator]:active,
+[data-separator][data-resize-handle-state="drag"] {
+  background-color: #007acc;
+}
+
+[data-separator]:active::after,
+[data-separator][data-resize-handle-state="drag"]::after {
+  border-left: 2px solid #4fc1ff;
+  border-right: 2px solid #4fc1ff;
+  box-shadow: 0 0 8px rgba(0, 122, 204, 0.6);
+}
+
+/* Vertical separator (for vertical groups) */
+[data-group][data-orientation="vertical"] [data-separator] {
+  width: 100%;
+  height: 4px;
+  cursor: row-resize;
+}
+
+[data-group][data-orientation="vertical"] [data-separator]::before {
+  left: 0;
+  right: 0;
+  top: -4px;
+  bottom: -4px;
+}
+
+[data-group][data-orientation="vertical"] [data-separator]::after {
+  border-left: none;
+  border-right: none;
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+}
+
+[data-group][data-orientation="vertical"] [data-separator]:hover::after {
+  border-top: 2px solid #007acc;
+  border-bottom: 2px solid #007acc;
+}
+
+[data-group][data-orientation="vertical"] [data-separator]:active::after,
+[data-group][data-orientation="vertical"] [data-separator][data-resize-handle-state="drag"]::after {
+  border-top: 2px solid #4fc1ff;
+  border-bottom: 2px solid #4fc1ff;
+}
+

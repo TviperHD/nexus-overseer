@@ -10,7 +10,7 @@ When the user indicates the session is ending or references this file, you MUST:
 
 ### 1. Complete Session Overview Document
 
-**Update the session overview document (`session-overviews/YYYY-MM-DD-session-overview.md`) with:**
+**Update the session overview document (same name as checklist) with:**
 
 - ✅ **Session End Time:** Update when user provides it
 - ✅ **Session Duration:** Calculate and update duration
@@ -54,7 +54,7 @@ When the user indicates the session is ending or references this file, you MUST:
 **After completing all sections:**
 
 - ✅ Commit the session overview to Git (if Git is set up)
-- ✅ Use descriptive commit message: "Session overview: [Phase] - [Brief description]"
+- ✅ Use descriptive commit message: "Session overview: [Task/Feature] - [Brief description]"
 
 ### 6. Provide Summary
 

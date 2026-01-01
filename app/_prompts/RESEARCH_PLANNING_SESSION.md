@@ -50,7 +50,7 @@ This is a **planning/research session**, not an implementation session. Focus on
 ### Review Process
 
 **Step 1: Parse Session Overview**
-- Extract session date, phase, and focus
+- Extract session date, tasks/focus, and focus
 - Read "Quick Overview" to understand claimed accomplishments
 - Read "Detailed History" to see what was supposedly done
 - Read "Checklist Deviations" to see what was done differently
@@ -66,7 +66,7 @@ This is a **planning/research session**, not an implementation session. Focus on
 - Check Git commits match claimed work
 
 **Step 3: Verify Checklist Completion**
-- Read the relevant phase checklist(s) from implementation roadmap
+- Read the relevant checklist(s) from `app/checklists/`
 - Cross-reference claimed checklist items with actual checklist items
 - Verify each claimed completed item is actually done
 - Check if items were marked complete but shouldn't have been
@@ -92,7 +92,7 @@ This is a **planning/research session**, not an implementation session. Focus on
 - Fix integration issues
 
 **Step 6: Verify Nothing Was Skipped**
-- Go through the relevant phase checklist item by item
+- Go through the relevant checklist item by item
 - For each unchecked item, verify:
   - Was it supposed to be done in this session?
   - Was it explicitly discussed and deferred?
@@ -130,7 +130,7 @@ This is a **planning/research session**, not an implementation session. Focus on
 When reviewing a session overview, provide:
 
 ```markdown
-## Session Overview Review - [Date]
+## Session Overview Review - [Checklist Name]
 
 ### Verification Summary
 - **Files Verified:** [X] of [Y] files exist and match descriptions
@@ -175,7 +175,7 @@ When reviewing a session overview, provide:
 ### When Reviewing Checklist Items
 
 **For each checklist item, determine:**
-1. **Was it supposed to be done?** (Check phase/scope)
+1. **Was it supposed to be done?** (Check checklist scope)
 2. **Was it claimed to be done?** (Check session overview)
 3. **Is it actually done?** (Verify in code/files)
 4. **Was it discussed if skipped?** (Check session overview notes)
@@ -222,9 +222,10 @@ This is a complex desktop application with **11 fully-specified systems**. The a
 - `app/README.md` - Implementation folder overview
 
 **Session Overviews:**
-- `app/session-overviews/` - Session overview documents (YYYY-MM-DD-session-overview.md)
+- `app/session-overviews/` - Session overview documents (named same as checklist)
 - `app/session-overviews/SESSION_OVERVIEW_TEMPLATE.md` - Template for session overviews
 - **⚠️ When a session overview is provided, automatically review it**
+- **Note:** Session overviews are named the same as their corresponding checklist (no dates/times)
 
 **Technical Specifications:**
 - `03-planning/technical-specs-index.md` - Index of all 11 specs
@@ -241,9 +242,9 @@ This is a complex desktop application with **11 fully-specified systems**. The a
 
 **Planning Documents:**
 - `03-planning/technical-architecture.md` - System architecture
-- `03-planning/implementation-roadmap.md` - Development phases
-- `03-planning/readiness-checklist.md` - Planning completeness checklist
-- `03-planning/final-review.md` - Final planning review
+- `03-planning/implementation-roadmap.md` - Reference for features (not prescriptive phases)
+- `03-planning/readiness-checklist.md` - Planning completeness checklist (reference)
+- `03-planning/final-review.md` - Final planning review (reference)
 
 ---
 
@@ -517,7 +518,7 @@ Update specifications when:
 1. Read session overview document completely
 2. Verify all claimed files exist and match descriptions
 3. Check code matches what was described
-4. Review relevant phase checklists
+4. Review relevant checklists from `app/checklists/`
 5. Verify checklist items claimed as complete
 6. Identify any skipped items without discussion
 7. Fix all issues found immediately

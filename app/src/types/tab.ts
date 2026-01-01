@@ -22,5 +22,7 @@ export interface TabGroup {
   tabs: Tab[];                   // Tabs in this group
   activeTabId: string | null;    // Currently active tab
   direction?: 'horizontal' | 'vertical'; // For nested groups (future use)
+  isDragging?: boolean;          // Flag indicating if a tab is being dragged from this group
+  dropZone?: import('./tabDrag').DropZoneData; // Active drop zone for this group
 }
 

@@ -101,38 +101,28 @@ app/
 
 ---
 
-## Implementation Phases
+## Implementation Approach
 
-See `../03-planning/implementation-roadmap.md` for detailed phase breakdown.
+**As of 2025-12-30:** We use a **task-based approach** where checklists are created on-demand as tasks are completed, rather than following rigid phases.
 
-**Phase 0:** Project Setup (1-2 weeks)
-- Create Tauri project structure
-- Set up development environment
-- Install dependencies
-- Create basic UI shell
+- **Checklists:** Created as needed in `checklists/` folder
+- **No Phases:** Work through tasks based on what needs to be done
+- **Reference:** See `../03-planning/implementation-roadmap.md` for potential feature breakdown (reference only, not prescriptive)
 
-**Phase 1:** Core Foundation (3-4 weeks)
+**Key Features to Implement:**
 - File system integration
 - Basic tab system
 - Monaco Editor integration
 - LLM integration
 - Task scheduler
 - Dual-AI system
-
-**Phase 2:** Core Features (2-3 weeks)
 - Project management
 - Chat interface
-- Resizable panels (basic)
-
-**Phase 3:** UI Enhancement (2-3 weeks)
-- Advanced panel customization
+- Resizable panels
 - Multi-window support
 - State management
-
-**Phase 4:** Polish (1-2 weeks)
 - Configuration system
 - Settings UI
-- Final polish
 
 ---
 
@@ -171,16 +161,17 @@ See `../03-planning/implementation-roadmap.md` for detailed phase breakdown.
 
 3. **At Session End:**
    - Use `_prompts/AI_SESSION_END.md` to document session completion
-   - Create session overview in `session-overviews/`
+   - Create session overview in `session-overviews/` (same name as checklist, no dates/times)
 
 4. **Implementation Workflow:**
-   - Review `../03-planning/implementation-roadmap.md` for phase breakdown
-   - Start with Phase 0: Project Setup
+   - Review `../03-planning/implementation-roadmap.md` for feature reference (not prescriptive)
+   - Create task-based checklists as needed (see `checklists/README.md`)
    - Follow technical specifications for each system
    - Update checklists as you complete tasks
    - Document sessions in `session-overviews/`
+   - After completing a checklist, create a new one for next tasks
 
 ---
 
-**Status:** Ready for Phase 0: Project Setup
+**Status:** Ready for Implementation (Task-Based Approach)
 

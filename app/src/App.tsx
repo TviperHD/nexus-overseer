@@ -1,23 +1,27 @@
 import { useEffect, useState } from 'react';
-import { FileTreePlaceholder } from './components/FileTree/FileTreePlaceholder';
-import { EditorPlaceholder } from './components/Editor/EditorPlaceholder';
-import { ChatPlaceholder } from './components/Chat/ChatPlaceholder';
-import { TaskSchedulerPlaceholder } from './components/TaskScheduler/TaskSchedulerPlaceholder';
-import { FileSystemTest } from './components/FileSystemTest/FileSystemTest';
-import { TabSystemTest } from './components/Tab/TabSystemTest';
 import { ToastContainer } from './components/Toast';
 import { FileConflictHandler } from './components/Editor/FileConflictHandler';
+import { PanelGroup } from './components/Panels';
+import { EmptyCanvas } from './components/EmptyCanvas';
+import { TopBar } from './components/TopBar';
+import { DndTabContext } from './components/Tab';
 import { useEditorShortcuts } from './hooks/useEditorShortcuts';
 import { setupEditorFileWatcher } from './utils/editorFileWatcher';
 import { useEditorStore } from './stores/editorStore';
 import { useTabStore } from './stores/tabStore';
+import { usePanelStore } from './stores/panelStore';
 import { normalizePath } from './utils/pathUtils';
 import { requestPathPermission, addAllowedPath, watchFile } from './utils/fileSystem';
+import { createDefaultLayout, getDefaultPanelTabGroupMappings } from './utils/defaultLayout';
 
 function App() {
   // Enable editor keyboard shortcuts
   useEditorShortcuts();
   const [hasRestoredFiles, setHasRestoredFiles] = useState(false);
+  const [hasInitializedLayout, setHasInitializedLayout] = useState(false);
+  
+  const { currentLayout, loadLayout, resetLayout, setPanelTabGroupMapping } = usePanelStore();
+  const { createTabGroup, tabGroups } = useTabStore();
 
   // Restore file content for open tabs after rehydration
   // This runs once after both stores have rehydrated
@@ -128,6 +132,95 @@ function App() {
     return () => clearTimeout(timer);
   }, [hasRestoredFiles]);
 
+  // Initialize panel layout on mount - wait for stores to rehydrate
+  useEffect(() => {
+    if (hasInitializedLayout) return;
+
+    // Wait for Zustand stores to fully rehydrate from localStorage
+    // Zustand persist middleware rehydrates asynchronously
+    const timer = setTimeout(() => {
+      const panelStore = usePanelStore.getState();
+      const tabStore = useTabStore.getState();
+
+      console.log('[App Init] Starting initialization...');
+      console.log('[App Init] Tab groups in store:', tabStore.tabGroups.length);
+      console.log('[App Init] Layout exists:', !!panelStore.currentLayout);
+      console.log('[App Init] Layout groups:', panelStore.currentLayout?.groups?.length || 0);
+
+      // If we have a saved layout, validate and restore it
+      if (panelStore.currentLayout && panelStore.currentLayout.groups && panelStore.currentLayout.groups.length > 0) {
+        console.log('[App Init] Found saved layout, validating...');
+        
+        try {
+          // Find all panels in the saved layout (recursively)
+          const findAllPanels = (groups: any[]): any[] => {
+            const panels: any[] = [];
+            const traverse = (item: any) => {
+              if (item.id && !item.direction) {
+                // It's a PanelConfig
+                panels.push(item);
+              } else if (item.panels) {
+                // It's a PanelGroupConfig - traverse its panels
+                item.panels.forEach(traverse);
+              }
+            };
+            groups.forEach(group => {
+              if (group.panels) {
+                group.panels.forEach(traverse);
+              }
+            });
+            return panels;
+          };
+
+          const allPanels = findAllPanels(panelStore.currentLayout.groups);
+          console.log('[App Init] Found panels in layout:', allPanels.length);
+          
+          // Verify each panel has a valid tab group mapping
+          for (const panel of allPanels) {
+            if (panel.id) {
+              const tabGroupId = panelStore.getTabGroupForPanel(panel.id);
+              if (tabGroupId) {
+                // Verify the tab group exists in tab store
+                const tabGroup = tabStore.getTabGroup(tabGroupId);
+                if (!tabGroup) {
+                  // Stale mapping - create a new tab group
+                  console.log(`[App Init] Stale mapping for panel ${panel.id}, creating new tab group`);
+                  const newTabGroupId = tabStore.createTabGroup();
+                  panelStore.setPanelTabGroupMapping(panel.id, newTabGroupId);
+                }
+              }
+            }
+          }
+          
+          // Check if main panel exists in the saved layout
+          const hasMainPanel = allPanels.some(p => p.id === 'main-panel');
+          if (!hasMainPanel) {
+            console.log('[App Init] Main panel missing from saved layout, adding it');
+            // Add main panel to existing layout without overwriting it
+            panelStore.ensureMainPanelExists();
+          } else {
+            console.log('[App Init] Main panel found in saved layout');
+          }
+        } catch (error) {
+          console.error('[App Init] Error validating saved layout:', error);
+          // Don't clear the layout on error - just log it
+        }
+      } else {
+        // No saved layout - ensure main panel exists
+        console.log('[App Init] No saved layout found, creating main panel');
+        panelStore.ensureMainPanelExists();
+      }
+
+      console.log('[App Init] Initialization complete');
+      console.log('[App Init] Final tab groups:', tabStore.tabGroups.length);
+      console.log('[App Init] Final layout exists:', !!panelStore.currentLayout);
+
+      setHasInitializedLayout(true);
+    }, 300); // Wait 300ms to ensure Zustand stores are fully rehydrated
+
+    return () => clearTimeout(timer);
+  }, [hasInitializedLayout]);
+
   // Set up file watcher for editor
   useEffect(() => {
     let cleanup: (() => void) | null = null;
@@ -149,34 +242,49 @@ function App() {
     };
   }, []);
 
+  // Render panel layout
+  if (!hasInitializedLayout) {
+    return (
+      <div className="h-screen w-screen flex items-center justify-center bg-[#1e1e1e] text-[#858585]">
+        <p className="text-sm">Initializing layout...</p>
+      </div>
+    );
+  }
+
+  // Check if we have a saved layout
+  // If no layout exists, show empty canvas
+  const hasLayout = currentLayout && currentLayout.groups && currentLayout.groups.length > 0;
+
   return (
-    <div className="h-screen w-screen flex bg-main-bg">
-      {/* Left Sidebar - File Tree */}
-      <div className="w-64 border-r border-divider">
-        <FileTreePlaceholder />
-      </div>
-
-      {/* Main Area - Tab System Test (temporary for testing Phase 1.2) */}
-      <div className="flex-1 min-w-0 overflow-hidden">
-        <TabSystemTest />
-      </div>
-
-      {/* Right Sidebar - Chat & Task Scheduler */}
-      <div className="w-80 border-l border-divider flex flex-col">
-        <div className="flex-1 border-b border-divider">
-          <ChatPlaceholder />
+    <DndTabContext>
+      <div className="h-screen w-screen flex flex-col bg-[#1e1e1e]">
+        {/* TopBar - always at the top (fixed position) */}
+        <TopBar />
+        
+        {/* Content area - either empty canvas or panels */}
+        {/* Add top padding to account for fixed TopBar (30px height) */}
+        <div className="flex-1 min-h-0 min-w-0 overflow-hidden pt-[30px]">
+          {!hasLayout ? (
+            <EmptyCanvas />
+          ) : (
+            <>
+              {/* Render all panel groups from layout */}
+              {currentLayout.groups.map((group) => (
+                <div key={group.id} className="h-full w-full">
+                  <PanelGroup config={group} />
+                </div>
+              ))}
+            </>
+          )}
         </div>
-        <div className="flex-1">
-          <TaskSchedulerPlaceholder />
-        </div>
+        
+        {/* Toast Notifications */}
+        <ToastContainer />
+
+        {/* File Conflict Handler */}
+        <FileConflictHandler />
       </div>
-
-      {/* Toast Notifications */}
-      <ToastContainer />
-
-      {/* File Conflict Handler */}
-      <FileConflictHandler />
-    </div>
+    </DndTabContext>
   );
 }
 

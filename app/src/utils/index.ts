@@ -4,4 +4,5 @@ export * from './fileSystemEvents';
 export * from './languageDetection';
 export * from './editorFileWatcher';
 export * from './pathUtils';
+export * from './defaultLayout';
 

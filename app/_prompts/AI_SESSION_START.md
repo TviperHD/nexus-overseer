@@ -13,7 +13,7 @@ You are helping implement **Nexus Overseer**, a **PC desktop application** built
 **All rules in `.cursor/rules/` are NOW ACTIVE for this session.** You MUST:
 - ✅ Read and follow ALL rules in `.cursor/rules/` folder
 - ✅ Apply code standards, workflow rules, and implementation guidelines
-- ✅ Follow phase completion and testing requirements
+- ✅ Follow task completion and testing requirements
 - ✅ These rules apply because you're working in the `@app` folder
 
 ### ⚠️ CRITICAL: Working Directory Restriction
@@ -43,20 +43,21 @@ This is a complex desktop application with **11 fully-specified systems** ready 
 
 **⚠️ STEP 0: Create Session Overview Document (DO THIS FIRST)**
 - **CRITICAL:** IMMEDIATELY upon session start, create a new session overview document
-- Use template: `session-overviews/SESSION_OVERVIEW_TEMPLATE.md` (create if doesn't exist)
-- Name format: `session-overviews/YYYY-MM-DD-session-overview.md` (e.g., `2024-12-28-session-overview.md`)
-- Fill in session date and set start time
+- Use template: `session-overviews/SESSION_OVERVIEW_TEMPLATE.md`
+- **File naming:** `session-overviews/[CHECKLIST_NAME].md` - Use the SAME name as the checklist being worked on
+  - Example: If checklist is `tab-system.md`, overview should be `tab-system.md`
+- Fill in checklist name and focus
 - **This document is a LIVING DOCUMENT** - update it continuously as you work, not just at the end
-- You'll fill in phase and focus after reading project overview below
+- You'll fill in tasks/focus after reading project overview below
 
 **1. Read the Project Overview:**
 - `app/README.md` - Implementation folder overview, structure, and technology stack
 - `../README.md` - Project status and overview
-- After reading, update session overview with current phase and focus
+- After reading, update session overview with current tasks and focus
 
 **2. Review the Cursor Rules (CRITICAL - You MUST follow these):**
 - `.cursor/rules/code-standards.mdc` - TypeScript/React/Rust naming conventions, code organization
-- `.cursor/rules/implementation-workflow.mdc` - Implementation workflow, phase completion, testing
+- `.cursor/rules/implementation-workflow.mdc` - Implementation workflow, task completion, testing
 - `.cursor/rules/README.md` - Rules overview
 
 **⚠️ IMPORTANT:** All rules in `.cursor/rules/` apply to this session. Read and follow them strictly.
@@ -69,9 +70,10 @@ This is a complex desktop application with **11 fully-specified systems** ready 
 - **DO NOT proceed with implementation** until you have a clear session checklist
 - Update session overview with checklist information
 
-**3. Check Current Phase:**
-- Review `../03-planning/implementation-roadmap.md` to see what phase we're on
-- Update session overview with phase information
+**3. Review Current Tasks:**
+- Review the current checklist to understand what tasks need to be done
+- Check `../03-planning/implementation-roadmap.md` for reference (not prescriptive)
+- Update session overview with task/focus information
 
 **4. Read Technical Specifications:**
 - Before implementing ANY system, read its technical spec: `../03-planning/technical-specs-[system].md`
@@ -96,9 +98,8 @@ This is a complex desktop application with **11 fully-specified systems** ready 
 **⚠️ CRITICAL: Session Overview Requirements**
 
 **At Session Start:**
-1. ✅ Create new session overview file using template
-2. ✅ Fill in session date, phase, and initial focus
-3. ✅ Set session start time
+1. ✅ Create new session overview file using template (same name as checklist)
+2. ✅ Fill in checklist name and initial focus
 
 **During Session:**
 1. ✅ **Continuously update** the "Detailed History" section as you work
@@ -128,7 +129,8 @@ This is a complex desktop application with **11 fully-specified systems** ready 
 - Topics worth discussing
 - Next steps and blockers
 
-**Template Location:** `session-overviews/SESSION_OVERVIEW_TEMPLATE.md` (create if doesn't exist)
+**Template Location:** `session-overviews/SESSION_OVERVIEW_TEMPLATE.md`
+**Naming:** Session overview should have the SAME filename as the checklist (e.g., if checklist is `tab-system.md`, overview is `tab-system.md`)
 
 ### Critical Rules
 
@@ -227,12 +229,14 @@ app/
 - Basic Tab System
 - State Management (Zustand)
 
-**Then build in phases:**
-- Phase 0: Project Setup
-- Phase 1: Core Foundation (File System, Tab System, Monaco Editor, LLM Integration, Task Scheduler, Dual-AI)
-- Phase 2: Core Features (Project Management, Chat Interface, Resizable Panels basic)
-- Phase 3: UI Enhancement (Advanced Panels, Multi-Window, State Management)
-- Phase 4: Polish (Configuration System, Settings UI)
+**Key Features to Implement (Task-Based):**
+- Project Setup tasks
+- Core Foundation (File System, Tab System, Monaco Editor, LLM Integration, Task Scheduler, Dual-AI)
+- Core Features (Project Management, Chat Interface, Resizable Panels)
+- UI Enhancement (Advanced Panels, Multi-Window, State Management)
+- Polish (Configuration System, Settings UI)
+
+**Note (2025-12-30):** We use a task-based approach - checklists are created as needed, not following rigid phases.
 
 ### When Asked to Implement Something
 
@@ -316,7 +320,7 @@ If you're unsure about something:
 ### Remember
 
 - **Technical specifications are comprehensive** - they contain all implementation details
-- **Follow the implementation roadmap** - it breaks down tasks by phase
+- **Follow the implementation roadmap** - it's a reference for features (not prescriptive phases)
 - **Maintain modularity** - systems must work independently
 - **Keep it configurable** - use configuration files and constants
 - **Test everything** - individual functions + integration
@@ -326,5 +330,5 @@ If you're unsure about something:
 
 ---
 
-**Ready to start? Check what phase we're on and what system needs to be implemented next.**
+**Ready to start? Check the current checklist to see what tasks need to be done next.**
 
