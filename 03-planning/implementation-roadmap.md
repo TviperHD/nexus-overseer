@@ -1,12 +1,20 @@
 # Implementation Roadmap: Nexus Overseer
 
 **Date:** 2024-12-28  
-**Status:** Planning  
-**Purpose:** Comprehensive implementation plan and development roadmap
+**Status:** Reference (Not Prescriptive)  
+**Purpose:** Reference document showing potential implementation approach - **NOT a prescriptive plan**
+
+## ⚠️ Important Note
+
+**As of 2025-12-30:** This roadmap is now a **reference document only**. We've moved to a **task-based approach** where:
+- Checklists are created on-demand as tasks are completed
+- No rigid phase structure - just tasks that need to be done
+- This roadmap serves as a reference for what features exist and potential dependencies
+- **Do not follow phases strictly** - create checklists based on what needs to be done next
 
 ## Overview
 
-This roadmap breaks down the implementation of Nexus Overseer into manageable phases, starting with an MVP and progressively adding advanced features. Each phase builds upon the previous one, ensuring a solid foundation before adding complexity.
+This roadmap shows a potential breakdown of Nexus Overseer implementation into phases. **This is for reference only** - actual implementation follows a task-based approach where checklists are created as needed.
 
 ---
 
@@ -584,7 +592,7 @@ The critical path for MVP:
 2. ✅ Implementation roadmap created
 3. ⏳ Review and refine roadmap
 4. ⏳ Set up development environment
-5. ⏳ Begin Phase 0: Project Setup
+5. ⏳ Create task-based checklist for project setup (Note: 2025-12-30 - moved to task-based approach, not phase-based)
 
 ---
 

@@ -132,7 +132,9 @@ These documents contain discussion and exploration, but the final decisions are 
 - ✅ Roadmap defined
 - ✅ All implementation decisions made (including previously minor items)
 
-**Recommendation:** **Proceed with Phase 0: Project Setup**
+**Recommendation:** **Proceed with Project Setup** (Task-based approach)
+
+**Note (2025-12-30):** This document is reference only. We now use a task-based approach where checklists are created as needed, not following rigid phases.
 
 All implementation decisions have been made, including UI library, persistence format, and backend state storage. The project is fully ready to begin implementation.
 
@@ -141,7 +143,7 @@ All implementation decisions have been made, including UI library, persistence f
 ## Next Immediate Steps
 
 1. ✅ Review this checklist
-2. ⏳ Begin Phase 0: Project Setup
+2. ⏳ Create task-based checklist for project setup tasks
    - Create Tauri project
    - Set up development environment
    - Install dependencies

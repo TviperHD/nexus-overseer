@@ -48,3 +48,4 @@ src-tauri/Cargo.lock
 *.temp
 .cache/
 
+
